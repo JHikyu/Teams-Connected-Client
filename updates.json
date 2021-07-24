@@ -5,7 +5,7 @@
       "install": "https://github.com/JHikyu/Teams-Connected-Client/releases/download/v1.0.23/teams-connected-Setup-1.0.23.exe",
       "version": "1.0.22"
     },
-    "win32-x64-prod-v1.0.22": {
+    "win32-x64-prod-v1.0.23": {
       "readme": "Second release",
       "update": "https://github.com/JHikyu/Teams-Connected-Client/releases/tag/v1.0.23",
       "install": "https://github.com/JHikyu/Teams-Connected-Client/releases/download/v1.0.24/teams-connected-Setup-1.0.23.exe",
