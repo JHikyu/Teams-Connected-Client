@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams Connected</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="../src/css/scrollbar.css">
+
+</head>
+<body>
+    <div class="flex flex-col h-screen bg-gray-800 px-4 py-4">
+
+        <!-- Top bar -->
+        <div class='flex items-center mb-4'>
+            <!-- Left side -->
+            <div class="flex cursor-pointer" onclick="profile()">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" class='mr-2 w-8 h-8 rounded'>
+                <h1 id="username" class="text-lg text-white font-medium"></h1>
+            </div>
+            <!-- Placeholder -->
+            <!-- Right side -->
+            <div class="flex-1"></div>
+            <i onclick="addFriend()" class="fas fa-plus text-xl text-white p-2 cursor-pointer"></i>
+        </div>
+
+        <!-- Friend list -->
+        <div class="flex flex-col flex-1 px-2 space-y-2 overflow-x-auto mb-4">
+
+            <!-- Single friend -->
+            <div class="flex flex-col bg-gray-700 rounded p-2 cursor-pointer relative border-b border-gray-400">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" class='absolute top-2 right-2 w-6 h-6 rounded'>
+                    <div class="absolute top-6 right-2 h-2 w-2 bg-gray-400 rounded"></div>
+                </img>
+                <span class="text-gray-200">Dummy</span>
+                <p class="text-gray-300 text-sm">Not added</p>
+            </div>
+            <div class="flex flex-col bg-gray-700 rounded p-2 cursor-pointer relative border-b border-green-400">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" class='absolute top-2 right-2 w-6 h-6 rounded'>
+                    <div class="absolute top-6 right-2 h-2 w-2 bg-green-400 rounded"></div>
+                </img>
+                <span class="text-gray-200">Version 1.0.3 at 12:06</span>
+                <p class="text-gray-300 text-sm">Lorem ipsum dolor sit am..</p>
+            </div>
+        </div>
+
+        <!-- Navigation bar -->
+        <div class='flex justify-evenly border-t border-gray-600 pt-4'>
+            <i class="fas fa-bell text-gray-500 hover:text-white text-xl cursor-pointer"></i>
+
+            <i class="fas fa-comment-alt text-white text-xl"></i>
+
+            <i class="fas fa-users text-gray-500 hover:text-white text-xl cursor-pointer"></i>
+        </div>
+
+
+
+    </div>
+</body>
+<footer>
+    <script>
+        const { ipcRenderer } = require('electron');
+
+
+        ipcRenderer.send('profile_requestIndex');
+        ipcRenderer.on('profile_sendIndex', (event, arg) => {
+            document.querySelector('#username').textContent = arg.username;
+        })
+
+
+        function profile() {
+            ipcRenderer.send('changeTab', 'profile');
+        }
+        function addFriend() {
+            ipcRenderer.send('changeTab', 'addFriend');
+        }
+        
+    </script>
+</footer>
+</html>

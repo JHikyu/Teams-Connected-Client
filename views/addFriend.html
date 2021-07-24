@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams Connected</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="../src/css/scrollbar.css">
+
+</head>
+<body>
+    <div class="flex flex-col h-screen bg-gray-800 px-4 py-4 justify-between items-center">
+
+        <i onclick="index()" class="fas fa-times-circle text-xl text-red-500 p-2 absolute top-2 right-2 cursor-pointer hover:text-red-700"></i>
+
+
+
+
+    </div>
+</body>
+<footer>
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        function index() {
+            ipcRenderer.send('changeTab', 'index');
+        }
+
+
+    </script>
+</footer>
+</html>

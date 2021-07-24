@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams Connected</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="flex flex-col h-screen bg-gray-800 px-4 py-4">
+
+        <h1 class="text-md text-white font-medium">Setting up user profile</h1>
+
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" class='my-8 w-16 h-16 rounded-full'>
+
+        <input id='name' onmouseenter="removeBounce()" class="appearance-none bg-transparent border-b border-gray-400 w-full py-1 text-lg text-gray-100 leading-tight focus:outline-none" type="text" placeholder="Jane Doe">
+        <input id='email' class="appearance-none bg-transparent border-b border-gray-400 w-full mt-4 py-1 text-lg text-gray-100 leading-tight focus:outline-none" type="email" placeholder="your@email.com (optional)">
+
+        <div class='flex-1'></div>
+
+        <button onclick="next()" class="bg-green-500 hover:bg-green-700 text-white font-bold mx-6 py-2 px-4 rounded-full">
+            Next
+        </button>
+
+
+    </div>
+</body>
+<footer>
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        function next() {
+            let name = document.querySelector('#name');
+            let email = document.querySelector('#email');
+
+            if(name.value.length >= 5) {
+                ipcRenderer.send('createProfile', { name: name.value, email: email.value });
+            }
+            else {
+                name.classList.add('border-red-400')
+                name.classList.add('animate-pulse')
+                name.classList.remove('border-gray-400')
+            }
+        }
+
+        function removeBounce() {
+            let name = document.querySelector('#name');
+            name.classList.remove('border-red-400')
+            name.classList.remove('animate-pulse')
+            name.classList.add('border-gray-400')
+        }
+    </script>
+</footer>
+</html>

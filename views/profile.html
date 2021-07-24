@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams Connected</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="../src/css/scrollbar.css">
+
+</head>
+<body>
+    <div class="flex flex-col h-screen bg-gray-800 px-4 py-4 justify-between items-center">
+
+        <i onclick="profile()" class="fas fa-times-circle text-xl text-red-500 p-2 absolute top-2 right-2 cursor-pointer hover:text-red-700"></i>
+
+        <div></div>
+
+        <div class="flex flex-col items-center">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" class='mb-2 w-16 h-16 rounded-full shadow'>
+            
+            <div class="flex items-center items-center justify-center mb-6">
+                <h1 class="ml-4 text-2xl text-white font-medium cursor-default" id="username"></h1>
+                <input onkeyup="usernameChanged()" id='usernameChange' class="hidden appearance-none bg-transparent border-b w-32 border-gray-400 py-1 text-lg text-gray-100 leading-tight focus:outline-none" type="text" placeholder="Jane Doe">
+
+                <i onclick="changeName()" class="fas fa-edit text-sm text-gray-400 hover:text-white p-2 cursor-pointer"></i>
+            </div>
+
+
+            <span class="text-gray-400">Your friend code</span>
+            <span class="text-2xl text-white font-medium cursor-pointer" id="publicKey"></span>
+
+        </div>
+
+
+
+        <button id="buttonSave" onclick="saveProfile()" class="bg-gray-500 cursor-default text-white font-bold mx-6 py-2 px-10 rounded-full">
+            Save
+        </button>
+
+
+
+    </div>
+</body>
+<footer>
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        function profile() {
+            ipcRenderer.send('changeTab', 'index');
+        }
+
+        ipcRenderer.send('profile_requestProfile');
+
+        ipcRenderer.on('profile_sendProfile', (event, arg) => {
+            document.querySelector('#publicKey').textContent = arg.publicKey;
+            document.querySelector('#usernameChange').value = arg.username;
+            document.querySelector('#username').textContent = arg.username;
+            
+        })
+
+
+
+        function changeName() {
+            document.querySelector('#username').classList.add('hidden');
+            document.querySelector('#usernameChange').classList.remove('hidden');
+        }
+
+        function usernameChanged() {
+            let value = document.querySelector('#usernameChange').value;
+
+            if(value != document.querySelector('#username').textContent && value.length >= 5) {
+                document.querySelector('#buttonSave').classList.remove('bg-gray-500');
+                document.querySelector('#buttonSave').classList.add('bg-green-500');
+                document.querySelector('#buttonSave').classList.add('hover:bg-green-700');
+                document.querySelector('#buttonSave').classList.remove('cursor-default');
+            }
+            else {
+                document.querySelector('#buttonSave').classList.add('bg-gray-500');
+                document.querySelector('#buttonSave').classList.remove('bg-green-500');
+                document.querySelector('#buttonSave').classList.remove('hover:bg-green-700');
+                document.querySelector('#buttonSave').classList.add('cursor-default');  
+            }
+        }
+
+        function saveProfile() {
+            let username = document.querySelector('#usernameChange').value;
+            if(username != document.querySelector('#username').textContent && username.length >= 5) {
+                ipcRenderer.send('profile_save', { username: username });
+
+                document.querySelector('#buttonSave').classList.add('bg-gray-500');
+                document.querySelector('#buttonSave').classList.remove('bg-green-500');
+                document.querySelector('#buttonSave').classList.remove('hover:bg-green-700');
+                document.querySelector('#buttonSave').classList.add('cursor-default');  
+
+                document.querySelector('#username').classList.remove('hidden');
+                document.querySelector('#username').textContent = username;
+                document.querySelector('#usernameChange').classList.add('hidden');
+            }
+        }
+
+
+    </script>
+</footer>
+</html>
